@@ -1,0 +1,20 @@
+@startuml LingoQuest_UseCase
+left to right direction
+skinparam packageStyle rectangle
+
+actor User as u
+actor Admin as a
+
+rectangle LingoQuest {
+	u -- (Register / Login)
+	u -- (Create Avatar)
+	u -- (View / Select Stage)
+	u -- (Play on the Stage)
+	u -- (Summarize Stage)
+	u -- (Item Purchased) 
+	u -- (Game Config)
+	u -- (Log Out) 
+}
+
+
+@enduml
