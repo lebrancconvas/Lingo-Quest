@@ -9,6 +9,7 @@ specifiers:
   '@types/cookie': ^0.5.1
   '@typescript-eslint/eslint-plugin': ^5.45.0
   '@typescript-eslint/parser': ^5.45.0
+  carbon-components-svelte: ^0.72.2
   eslint: ^8.28.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-svelte3: ^4.0.0
@@ -30,6 +31,7 @@ devDependencies:
   '@types/cookie': 0.5.1
   '@typescript-eslint/eslint-plugin': 5.50.0_go4drrxstycfikanvu45pi4vgq
   '@typescript-eslint/parser': 5.50.0_4vsywjlpuriuw3tl5oq6zy5a64
+  carbon-components-svelte: 0.72.2
   eslint: 8.33.0
   eslint-config-prettier: 8.6.0_eslint@8.33.0
   eslint-plugin-svelte3: 4.0.0_4omm2ewoudhgnmf7aocafatnc4
@@ -659,6 +661,12 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
+  /carbon-components-svelte/0.72.2:
+    resolution: {integrity: sha512-fTwRQ+bQ+0lZooS2FOkERIaZGoBzWNPn2Ksq8+3K4x+E/pU9EFEnFH7PadYMpuxih2o5N0Dbn0YC9JyZbZrQJw==}
+    dependencies:
+      flatpickr: 4.6.9
+    dev: true
+
   /chai/4.3.7:
     resolution: {integrity: sha512-HLnAzZ2iupm25PlN0xFreAlBA5zaBSv3og0DdeGA4Ar6h6rJ3A0rolRUKJhSF2V10GZKDgWF/VmAEsNWjCRB+A==}
     engines: {node: '>=4'}
@@ -1020,6 +1028,10 @@ packages:
     dependencies:
       flatted: 3.2.7
       rimraf: 3.0.2
+    dev: true
+
+  /flatpickr/4.6.9:
+    resolution: {integrity: sha512-F0azNNi8foVWKSF+8X+ZJzz8r9sE1G4hl06RyceIaLvyltKvDl6vqk9Lm/6AUUCi5HWaIjiUbk7UpeE/fOXOpw==}
     dev: true
 
   /flatted/3.2.7:
