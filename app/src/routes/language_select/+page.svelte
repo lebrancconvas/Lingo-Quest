@@ -29,6 +29,9 @@
 </div>
 
 <style>
+	* {
+		background-color: #5cc4ff; 
+	}
 	header {
 		text-align: center; 
 	}	
