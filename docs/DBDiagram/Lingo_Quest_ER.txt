@@ -1,0 +1,59 @@
+table User {
+  id bigint
+  username varchar
+  password varchar
+  displayname varchar
+  created_at datetime
+}
+
+table Player {
+  id bigint
+  user_id bigint
+  level int
+  exp int
+  hp int
+  mp int
+  atk int
+  equipment_id bigint
+  goldamount int
+}
+
+table Language {
+  id bigint
+  name varchar
+  description varchar
+}
+
+table Stage {
+  id bigint
+  language_id bigint
+  code varchar
+  name varchar
+  enemy_id bigint
+}
+
+table Enemy {
+  id bigint
+  name varchar
+  level int
+  hp int
+  mp int
+  atk int
+  equipment_id bigint
+}
+
+table Equipment {
+  id bigint
+  name varchar
+  level int
+  description varchar
+  baseatk int
+  price int
+}
+
+ref: User.id - Player.user_id
+ref: Language.id < Stage.language_id
+ref: Enemy.id - Stage.enemy_id
+ref: Equipment.id < Player.equipment_id
+ref: Equipment.id < Enemy.equipment_id
+
