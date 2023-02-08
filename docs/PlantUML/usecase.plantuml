@@ -14,7 +14,10 @@ rectangle LingoQuest {
 	u -- (Item Purchased) 
 	u -- (Game Config)
 	u -- (Log Out) 
+	(Register / Login) -- a
+	(Manage Stage Data) -- a
+	(Manage User Data) -- a 
+	(Log Out) -- a
 }
-
 
 @enduml
