@@ -7,6 +7,10 @@
 	];
 </script>
 
+<svelte:head>
+	<title>Lingo Quest | Select Language</title> 
+</svelte:head>
+
 <div>
 	<header>
 		<div>
