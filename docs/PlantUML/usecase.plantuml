@@ -17,6 +17,7 @@ rectangle LingoQuest {
 	(Register / Login) -- a
 	(Manage Stage Data) -- a
 	(Manage User Data) -- a 
+	(Manage Item Data) -- a
 	(Log Out) -- a
 }
 
