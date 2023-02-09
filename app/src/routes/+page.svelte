@@ -2,7 +2,7 @@
 </script>
 
 <svelte:head>
-	<title>Lingo Quest</title> 
+	<title>Lingo Quest | Learning language can be fun</title> 
 </svelte:head>
 
 <div>
