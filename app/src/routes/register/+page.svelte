@@ -3,26 +3,47 @@
 </script>
 
 <div>
-	<header>
-		<div>
-			<h1>Register</h1> 
-		</div>
-	</header>
-	<section id="register-section">
-		<form method="POST">
-			<label for="Username"></label>
-			<input type="text" name="Username" id="username">
-			<label for="Password"></label>
-			<input type="password" name="Password" id="password"> 
-			<div>
-				<button>Register</button> 
+	<section id="register-form-canvas">
+		<section id="register-form">
+			<div id="register-header">
+				<h2>Join us and Learn together</h2>
 			</div>
-		</form>
+			<form action="">
+				<div>
+					<label for="username">Username *</label>
+					<input type="text" />
+				</div>	
+				<div>
+					<label for="password">Password *</label>
+					<input type="password" />
+				</div>	
+				<div>
+					<label for="confirm-password">Confirm Password *</label>
+					<input type="password" />
+				</div>	
+				<div>
+					<label for="display-name">Display Name</label>
+					<input type="text" />
+				</div>	
+			</form>
+		</section>
 	</section>
 </div>
 
 <style>
-	header {
+	#register-form {
+		width: 44%;
+		height: 600px; 
+		border-radius: 10px; 
+		background-color: white; 
+		margin: 0 auto; 
+	}
+
+	#register-header {
 		text-align: center; 
+	}
+
+	input {
+		outline: none; 
 	}
 </style>
