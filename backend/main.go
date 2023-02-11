@@ -13,13 +13,18 @@ type User struct {
 }
 
 func main() {
-	app := fiber.New();
+	app := fiber.New(fiber.Config{
+		Prefork: true,
+	});
 	
 	// Middleware
-
 	app.Use(cors.New());
-	app.Use(logger.New());
+	app.Use(logger.New(logger.Config{
+		TimeZone: "Asia/Bangkok",
+	}));
 	
+	// CRUD
+	// GET METHOD. 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello Lingo Quest API.");
 	})
