@@ -26,6 +26,11 @@ type SignupRequest struct {
 	Displayname string `json:"displayname"`
 }
 
+type LoginRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 var db *sqlx.DB; 
 
 func main() {
@@ -75,13 +80,14 @@ func signup(c *fiber.Ctx) error {
 		return fiber.ErrUnprocessableEntity; 
 	}
 
-	password, err := bcrypt.GenerateFromPassword([]byte(request.Password), 20);
+	password, err := bcrypt.GenerateFromPassword([]byte(request.Password), 4);
 	if err != nil {
 		return fiber.NewError(fiber.StatusUnprocessableEntity, err.Error());
 	}
 
 	query := "INSERT users (username, password, displayname) VALUES (?, ?, ?)";
-	result, err := db.Exec(query, request.Username, request.Password, request.Displayname);
+	newGenPassword := string(password)[0:16];
+	result, err := db.Exec(query, request.Username, newGenPassword, request.Displayname);
 	if err != nil {
 		return fiber.NewError(fiber.StatusUnprocessableEntity, err.Error());
 	}
@@ -96,14 +102,12 @@ func signup(c *fiber.Ctx) error {
 	user := User{
 		ID: int(id),
 		Username: request.Username,
-		Password: string(password),
+		Password: newGenPassword,
 		Displayname: request.Displayname,
 		Created_at: created_at,
 	}
 
-
-
-	return c.JSON(user); 
+	return c.Status(fiber.StatusCreated).JSON(user); 
 }
 
 func login(c *fiber.Ctx) error {
