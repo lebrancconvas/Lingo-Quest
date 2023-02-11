@@ -2,14 +2,17 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/jmoiron/sqlx"
 	"golang.org/x/crypto/bcrypt"
+	jwtware "github.com/gofiber/jwt/v2"
 )
 
 type User struct {
@@ -32,6 +35,7 @@ type LoginRequest struct {
 }
 
 var db *sqlx.DB; 
+const jwtSecret = "<SECRET PASSWORD>";
 
 func main() {
 	var err error;
@@ -44,6 +48,17 @@ func main() {
 	app := fiber.New(fiber.Config{
 		Prefork: true,
 	});
+
+	app.Use("/users", jwtware.New(jwtware.Config{
+		SigningMethod: "HS256",
+		SigningKey: []byte(jwtSecret),
+		SuccessHandler: func(c *fiber.Ctx) error {
+			return c.Next();
+		},
+		ErrorHandler: func(c *fiber.Ctx, e error) error {
+			return fiber.ErrUnauthorized; 
+		},
+	}))
 	
 	// Middleware
 	app.Use(cors.New());
@@ -86,7 +101,7 @@ func signup(c *fiber.Ctx) error {
 	}
 
 	query := "INSERT users (username, password, displayname) VALUES (?, ?, ?)";
-	newGenPassword := string(password)[0:16];
+	newGenPassword := string(password);
 	result, err := db.Exec(query, request.Username, newGenPassword, request.Displayname);
 	if err != nil {
 		return fiber.NewError(fiber.StatusUnprocessableEntity, err.Error());
@@ -111,9 +126,40 @@ func signup(c *fiber.Ctx) error {
 }
 
 func login(c *fiber.Ctx) error {
-	return nil;
+	request := LoginRequest{};
+	err := c.BodyParser(&request);
+	if err != nil {
+		return err;
+	}
+
+	user := User{};
+	query := "SELECT id, username, password, displayname, created_at FROM users WHERE username=?";
+	err = db.Get(&user, query, request.Username);
+	if err != nil {
+		return fiber.NewError(fiber.StatusNotFound, "[ERROR] Incorrect Username or Password");
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(request.Password));
+	if err != nil {
+		return fiber.NewError(fiber.StatusNotFound, "[ERROR] Incorrect Username or Password"); 
+	}
+
+	claims := jwt.StandardClaims{
+		Issuer: strconv.Itoa(user.ID),
+		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
+	}
+
+	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims);
+	token, err := jwtToken.SignedString([]byte(jwtSecret));
+	if err != nil {
+		return fiber.ErrInternalServerError;
+	}
+
+	return c.JSON(fiber.Map{
+		"jwtToken": token,
+	})
 }
 
 func getUsers(c *fiber.Ctx) error {
-	return nil;
+	return c.SendString("Login Success.");
 }
