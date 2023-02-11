@@ -3,8 +3,14 @@ module github.com/lebrancconvas/Lingo-Quest/api
 go 1.19
 
 require (
+	github.com/go-sql-driver/mysql v1.7.0
+	github.com/gofiber/fiber/v2 v2.42.0
+	github.com/jmoiron/sqlx v1.3.5
+	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
+)
+
+require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
-	github.com/gofiber/fiber/v2 v2.42.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/klauspost/compress v1.15.15 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect

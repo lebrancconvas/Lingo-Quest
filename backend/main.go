@@ -1,18 +1,41 @@
 package main
 
 import (
+	"fmt"
+	"time"
+
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/jmoiron/sqlx"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
+	ID int `db:"id" json:"id"`
+	Username string `db:"username" json:"username"`
+	Password string `db:"password" json:"password"`
+	Displayname string `db:"displayname" json:"displayname"`
+	Created_at string `db:"created_at" json:"created_at"`
+}
+
+type SignupRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Displayname string `json:"displayname"`
 }
 
+var db *sqlx.DB; 
+
 func main() {
+	var err error;
+	db, err = sqlx.Open("mysql", "root:<SECRET_PASSWORD>@tcp(0.0.0.0:3306)/lingo_quest");
+	if err != nil {
+		fmt.Println()
+		panic(err);
+	}
+
 	app := fiber.New(fiber.Config{
 		Prefork: true,
 	});
@@ -29,22 +52,64 @@ func main() {
 		return c.SendString("Hello Lingo Quest API.");
 	})
 
-	var users []User;
+	v1 := app.Group("/api/v1", func (c *fiber.Ctx) error {
+		c.Set("version", "v1");
+		return c.Next(); 
+	});
 
-	app.Post("/api/v1/users", func(c *fiber.Ctx) error {
-		newUser := User{
-			Username: "lebrancconvas",
-			Password: "asidw9qw",
-			Displayname: "Lebranc Convas",
-		}
-
-		users := append(users, newUser);
-		return c.JSON(users); 
-	})
-	
-	app.Get("/api/v1/users", func(c *fiber.Ctx) error {
-		return c.JSON(users); 
-	})
+	v1.Post("/signup", signup);
+	v1.Post("/login", login);
+	v1.Get("/users", getUsers);
 
 	app.Listen(":8009");
+}
+
+func signup(c *fiber.Ctx) error {
+	request := SignupRequest{};
+	err := c.BodyParser(&request);	
+	if err != nil {
+		return err;
+	}
+
+	if request.Username == "" || request.Password == "" || request.Displayname == "" {
+		return fiber.ErrUnprocessableEntity; 
+	}
+
+	password, err := bcrypt.GenerateFromPassword([]byte(request.Password), 20);
+	if err != nil {
+		return fiber.NewError(fiber.StatusUnprocessableEntity, err.Error());
+	}
+
+	query := "INSERT users (username, password, displayname) VALUES (?, ?, ?)";
+	result, err := db.Exec(query, request.Username, request.Password, request.Displayname);
+	if err != nil {
+		return fiber.NewError(fiber.StatusUnprocessableEntity, err.Error());
+	}
+
+	id, err := result.LastInsertId();
+	if err != nil {
+		return fiber.NewError(fiber.StatusUnprocessableEntity, err.Error());
+	}
+
+	created_at := time.Now().Format(time.RFC850);
+
+	user := User{
+		ID: int(id),
+		Username: request.Username,
+		Password: string(password),
+		Displayname: request.Displayname,
+		Created_at: created_at,
+	}
+
+
+
+	return c.JSON(user); 
+}
+
+func login(c *fiber.Ctx) error {
+	return nil;
+}
+
+func getUsers(c *fiber.Ctx) error {
+	return nil;
 }
