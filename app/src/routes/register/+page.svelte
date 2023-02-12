@@ -35,6 +35,8 @@
 			"password": password,
 			"displayname": displayname
 		}).then(res => {
+			alert("Register Success.");
+			window.location.reload();
 			console.log(res);
 		}).catch(err => {
 			console.error(err);
@@ -53,7 +55,7 @@
 			<div id="register-header">
 				<h2>Join us and Learn together</h2>
 			</div>
-			<form action="POST">
+			<form>
 				<div>
 					<label for="username">Username * (Max 20 Characters)</label>
 					<br>
