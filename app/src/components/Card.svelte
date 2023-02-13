@@ -19,15 +19,13 @@
 <style>
 
 	#card-canvas {
-    display: flex;
-    flex-wrap: wrap;
     padding: 0 2px;
     margin: 0 16px 16px 16px;
 	}	
 	#card {
 		border: 1px solid black; 
+		position: relative; 
 		padding: 10px;
-		display: grid; 
 		width: 25%;
 		height: 380px;  
 		margin: 10px auto; 

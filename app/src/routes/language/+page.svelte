@@ -14,6 +14,10 @@
 			"imageURL": "https://cdn-icons-png.flaticon.com/512/3054/3054070.png"
 		}
 	];
+
+	const route = (language: string) => {
+		return `/stage/${language}`;
+	}
 </script>
 
 <svelte:head>
@@ -31,7 +35,9 @@
 	<section id="language-option-section">
 		<div>
 			{#each languageList as language}
-				<Card language={language.title} imageURL={language.imageURL} />   
+				<a href={route(language.title)}>
+					<Card language={language.title} imageURL={language.imageURL} />   
+				</a>
 			{/each}
 		</div>
 	</section>
