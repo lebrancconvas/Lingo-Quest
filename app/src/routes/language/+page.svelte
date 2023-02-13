@@ -1,9 +1,18 @@
 <script lang="ts">
 	import Card from '../../components/Card.svelte';
 	const languageList = [
-		"Chinese",
-		"Japanese",
-		"Korean"
+		{
+			"title": "Chinese",
+			"imageURL": "https://cdn-icons-png.flaticon.com/512/4008/4008919.png"
+		},
+		{
+			"title": "Japanese",
+			"imageURL": "https://cdn-icons-png.flaticon.com/512/3054/3054008.png"
+		},
+		{
+			"title": "Korean",
+			"imageURL": "https://cdn-icons-png.flaticon.com/512/3054/3054070.png"
+		}
 	];
 </script>
 
@@ -22,7 +31,7 @@
 	<section id="language-option-section">
 		<div>
 			{#each languageList as language}
-				<Card language={language} />   
+				<Card language={language.title} imageURL={language.imageURL} />   
 			{/each}
 		</div>
 	</section>
