@@ -9,7 +9,13 @@
 
 	let isValid: boolean = false; 
 
-	if(heading === "Chinese" || heading === "Japanese" || heading === "Korean") {
+	const languageList = [
+		"Chinese",
+		"Japanese",
+		"Korean"
+	]
+
+	if(languageList.includes(heading)) {
 		isValid = true;
 	}
 </script>
